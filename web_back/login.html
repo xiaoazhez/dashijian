@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="./js/bootstrap/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -29,7 +30,71 @@
             </form>
         </div>
 
-    </div> 
+    </div>
+
+
+    <!-- bootstrap模态框 -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">提示框</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/jquery-1.12.4.min.js"></script>
+    <script src="./js/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $('.input_sub').on('click', function (e) {
+                e.preventDefault();
+                var username = $('.input_txt').val().trim();
+                var password = $('.input_pass').val().trim();
+                console.log(username + ':' + password);
+                if (username == '' || password == '') {
+                    // alert('您输入的用户名或密码为空');
+                    $('.modal-body').text('您输入的用户名或密码为空');
+                    $('#myModal').modal({
+                        keyboard: false
+                    });
+                } else {
+                    $.ajax({
+                        type: 'post',
+                        url: 'https://autumnfish.cn/big/admin/login',
+                        data: {
+                            user_name: username,
+                            password: password
+                        },
+                        success: function (xhrData) {
+                            console.log(xhrData);
+                            if (xhrData.code != 200) {
+                                // alert('您输入的用户名或密码错误');
+                                $('.modal-body').text('您输入的用户名或密码错误');
+                                $('#myModal').modal({
+                                    keyboard: false
+                                });
+                            } else {
+                                window.location.href = './index.html';
+                            }
+                        }
+                    })
+                }
+
+            })
+        })
+
+    </script>
 
 </body>
 

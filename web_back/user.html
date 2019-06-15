@@ -22,40 +22,44 @@
         <div class="container-fluid common_con">
             <form class="form-horizontal article_form">
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">用户名称：</label>
+                    <label for="inputEmail3" class="col-sm-2 control-label ">用户名称：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="inputEmail3" value="李思思">
+                        <input type="text"  name="nickname" class="form-control nickname" id="inputEmail3" value="李思思">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">昵称：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="inputEmail3" value="思思">
+                        <input type="text"  name="username"  class="form-control  username" id="inputEmail3" value="思思">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">邮箱：</label>
+                    <label for="inputEmail3" class="col-sm-2 control-label ">邮箱：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="inputEmail3" value="lisisi@126.com">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="inputPassword3" class="col-sm-2 control-label">用户图标：</label>
-                    <div class="col-sm-10">
-                        <img src="images/2.jpg" alt="" class="user_pic">
-                        <input type="file" id="exampleInputFile">
+                        <input type="text"   name="email" class="form-control  email" id="inputEmail3" value="lisisi@126.com">
                     </div>
                 </div>
 
                 <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">密码：</label>
-                        <div class="col-sm-4">
-                            <input type="password" class="form-control" id="inputEmail3" value="12345678">
-                        </div>
+                    <label for="inputPassword3" class="col-sm-2 control-label">用户图标：</label>
+                    <div class="col-sm-10">
+                        <img src="images/2.jpg" alt=""  class="user_pic">
+                         <!-- label的for属性,放一个input的id,那点击这个label就相当于点击了这个input. -->
+                         <label for="exampleInputFile">
+                                <img src="./images/uploadFileIcon.png" alt="" >
+                        </label>
+                        <input type="file" style="opacity: 0" id="exampleInputFile" name="user_pic">
                     </div>
-               
-    
+                </div>
+
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">密码：</label>
+                    <div class="col-sm-4">
+                        <input type="password" name="password" class="form-control password" id="inputEmail3" value="12345678">
+                    </div>
+                </div>
+
+
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button type="submit" class="btn btn-success">修改</button>
@@ -66,5 +70,57 @@
     </div>
 
 </body>
+
+
+<script>
+    $(function(){
+        $.ajax({
+            type: 'get',
+            url: ' https://autumnfish.cn/big/admin/userinfo_get',
+            success: function (xhrData) {
+                console.log(xhrData);
+                // $('input.nickname').val(xhrData.data.nickname);
+                // $('input.username').val(xhrData.data.username);
+                // $('input.email').val(xhrData.data.email);
+                // $('input.password').val(xhrData.data.password);
+                for(var key in xhrData.data){
+                    $('input.'+key).val(xhrData.data[key]);
+                }
+                $('img.user_pic').attr('src',xhrData.data.user_pic);
+            }
+        });
+
+        $('#exampleInputFile').on('change',function(){
+            var icon = this.files[0];
+            console.log(icon);
+            
+            var url = URL.createObjectURL(icon);
+            $('.user_pic').attr('src',url);
+        });
+        
+
+        $('.btn-success').on('click',function(e){
+            e.preventDefault();
+            var formData = new FormData($('.article_form')[0]);
+            $.ajax({
+                type:'post',
+                url:'https://autumnfish.cn/big/admin/userinfo_edit',
+                data:formData,
+                processData:false,
+                contentType:false,
+                success:function(xhrData){
+                    console.log(xhrData);
+                    
+                }
+
+            })
+
+        })
+
+
+        
+    })
+       
+</script>
 
 </html>

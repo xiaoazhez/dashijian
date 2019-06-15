@@ -20,7 +20,7 @@
         <a href="#" class="logo"><img src="images/logo02.png" alt="logo"></a>
         <div class="user_info">
             <img src="images/2.jpg" alt="person">
-            <span>欢迎&nbsp;&nbsp;李思思</span>
+            <span>欢迎&nbsp;&nbsp;<b>李思思</b></span>
             <b>管理员</b>
         </div>
         <div class="menu">
@@ -39,7 +39,7 @@
 
             <div class="level01"><a href="comment_list.html" target="main_frame"><i
                         class="iconfont icon-comment"></i><span>评论管理</span></a></div>
-            <div class="level01"><a href="user.html" target="main_frame"><i
+            <div class="level01" id="grzx"><a href="user.html" target="main_frame"><i
                         class="iconfont icon-user"></i><span>个人中心</span></a></div>
         </div>
     </div>
@@ -153,7 +153,22 @@
                     }
                 })
             })
-        })
+        });
+
+        $.ajax({
+            type:'get',
+            url:' https://autumnfish.cn/big/admin/getuser',
+            success:function(backData){
+                console.log(backData);
+              $('.user_info span b').text(backData.data.nickname);
+              $('.user_info img').attr('src',backData.data.user_pic);
+              $('.user_center_link img').attr('src',backData.data.user_pic);
+            }
+        });
+
+       
+
+        
 
 
     </script>
